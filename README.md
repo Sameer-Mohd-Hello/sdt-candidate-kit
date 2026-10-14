@@ -1,6 +1,6 @@
 # HROne Employee Attendance & Analytics API
 
-This project implements the FastAPI employee attendance and analytics service described by the assignment contract in `openapi.yaml` and the MongoDB data model in `DATA_MODEL.md`.
+This project implements a FastAPI employee attendance and analytics service backed by MongoDB.
 
 ## What the service does
 - Create and list employees
@@ -12,10 +12,7 @@ This project implements the FastAPI employee attendance and analytics service de
 
 ## Project structure
 - `app/main.py` – FastAPI app and business logic
-- `sample_data/` – sample MongoDB JSON documents used for local testing
-- `sample_seed.py` – loads the seed data into MongoDB
-- `openapi.yaml` – API contract and business rules
-- `DATA_MODEL.md` – MongoDB schema and stored fields
+- `requirements.txt` – Python dependencies
 - `REVIEW.md` – defect review for the starter implementation
 - `DECISIONS.md` – design decisions and trade-offs
 
@@ -35,9 +32,10 @@ python -m venv .venv
 # source .venv/bin/activate
 
 pip install -r requirements.txt
-python sample_seed.py
 uvicorn app.main:app --port 8000 --reload
 ```
+
+The API connects to MongoDB on startup and creates its required indexes. Set `MONGO_URI` and `MONGO_DB` in your shell or local `.env` file before starting the service if you are not using the defaults. Do not commit `.env` files.
 
 If you need a local MongoDB instance:
 ```bash
@@ -50,10 +48,7 @@ The service is expected to run with:
 uvicorn app.main:app --port 8000
 ```
 
-The readiness probe is available at:
-```http
-GET /health
-```
+The readiness probe is available at `GET /health`. Interactive API documentation is available at `/docs` while the service is running.
 
 ## Notes
 - The application keeps MongoDB indexes idempotent at startup.
